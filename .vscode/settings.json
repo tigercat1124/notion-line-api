@@ -1,6 +1,20 @@
 {
-    "python.analysis.extraPaths": [
-        "./.venv/lib/python3.13/site-packages",
-        "/usr/local/python/3.13.2/lib/python3.13/site-packages"
+    "python.defaultInterpreterPath": "${workspaceFolder}/.venv/bin/python",
+    "python.languageServer": "Pylance",
+    // Ruffをデフォルトのフォーマッターとリンターに設定
+    "editor.formatOnSave": true,
+    "[python]": {
+        "editor.defaultFormatter": "charliermarsh.ruff",
+        "editor.formatOnSave": true,
+        "editor.codeActionsOnSave": {
+            "source.fixAll": "explicit",
+            "source.organizeImports.ruff": "explicit"
+        }
+    },
+    // テスト設定
+    "python.testing.pytestEnabled": true,
+    "python.testing.unittestEnabled": false,
+    "python.testing.pytestArgs": [
+        "tests"
     ]
 }
