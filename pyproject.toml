@@ -1,0 +1,70 @@
+[tool.poetry]
+name = "notion-line-api"
+version = "0.1.0"
+description = "Integration between Notion and other services"
+authors = ["Your Name <your.email@example.com>"]
+readme = "README.md"
+packages = [{include = "src"}]
+
+[tool.poetry.dependencies]
+python = "^3.13"
+notion-client = "^2.3.0"
+python-dotenv = "^1.0.1"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^7.3.1"
+pytest-asyncio = "^0.21.0"
+pytest-cov = "^4.1.0"
+ruff = "^0.2.1"
+mypy = "^1.3.0"
+jupyterlab = "^4.0.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+# Ruff設定 (flake8, isort, black の設定を統合)
+[tool.ruff]
+# 基本設定
+line-length = 88
+target-version = "py311"
+# flake8互換のルール + isort互換のルール + black互換のフォーマッティング
+select = ["E", "F", "W", "I", "B", "C4", "ARG", "SIM", "ERA"]
+ignore = ["E203"]
+# 自動修正の有効化
+fix = true
+# インポートの並べ替え（isort互換）
+[tool.ruff.isort]
+known-first-party = ["src"]
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+line-ending = "auto"
+skip-magic-trailing-comma = false
+
+# 型チェック設定は mypy を使用
+[tool.mypy]
+python_version = "3.13"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+disallow_incomplete_defs = true
+
+# テスト設定
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+
+[tool.coverage.run]
+source = ["src"]
+omit = ["tests/*"]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "raise NotImplementedError",
+    "if __name__ == .__main__.:",
+    "pass",
+    "raise ImportError",
+]

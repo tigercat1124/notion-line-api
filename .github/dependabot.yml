@@ -1,0 +1,50 @@
+# GitHub Dependabotの設定ファイル
+# このファイルは .github/dependabot.yml に配置します
+
+version: 2
+updates:
+  # Pythonパッケージの依存関係を管理（Poetry）
+  - package-ecosystem: "pip"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+      timezone: "Asia/Tokyo"
+    open-pull-requests-limit: 3
+    labels:
+      - "dependencies"
+      - "python"
+    commit-message:
+      prefix: "pip"
+      include: "scope"
+    allow:
+      # 開発依存関係もマイナー/パッチのみに制限
+      - dependency-type: "development"
+        update-type: "semver:patch"
+      # 本番依存関係もパッチのみを許可
+      - dependency-type: "production"
+        update-type: "semver:patch"
+    # より詳細な設定
+    ignore:
+      # すべての依存関係のメジャーバージョン更新を無視
+      - dependency-name: "*"
+        update-types: ["version-update:semver:major"]
+      # 本番依存関係のマイナーバージョン更新も無視
+      - dependency-name: "notion-client"
+        update-types: ["version-update:semver:minor"]
+      - dependency-name: "python-dotenv"
+        update-types: ["version-update:semver:minor"]
+    versioning-strategy: "auto"
+
+  # GitHubアクション用の依存関係も管理
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    labels:
+      - "dependencies"
+      - "github-actions"
+    commit-message:
+      prefix: "github-actions"
+      include: "scope"
