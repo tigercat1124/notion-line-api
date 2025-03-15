@@ -1,9 +1,9 @@
 {
-  "name": "Python Zero-Config Development",
-  "image": "mcr.microsoft.com/devcontainers/python:3.13",
+  "name": "Python Ruff Development",
+  "image": "mcr.microsoft.com/devcontainers/python:3.11",
   "features": {
     "ghcr.io/devcontainers/features/python:1": {
-      "version": "latest",
+      "version": "3.11",
       "installTools": true,
       "installJupyterlab": true
     }
@@ -13,9 +13,7 @@
       "extensions": [
         "ms-python.python",
         "ms-python.vscode-pylance",
-        "ms-python.black-formatter",
-        "ms-python.isort",
-        "ms-python.flake8",
+        "charliermarsh.ruff",
         "ms-python.mypy-type-checker",
         "njpwerner.autodocstring",
         "kevinrose.vsc-python-indent",
@@ -26,44 +24,58 @@
         "ms-toolsai.jupyter",
         "saoudrizwan.claude-dev",
         "eamodio.gitlens",
+        "tamasfe.even-better-toml",
         "mhutchie.git-graph",
-        "streetsidesoftware.code-spell-checker"
+        "streetsidesoftware.code-spell-checker",
+        "GitHub.copilot",
+        "usernamehw.errorlens"
       ],
       "settings": {
         "python.defaultInterpreterPath": "/usr/local/bin/python",
         "python.languageServer": "Pylance",
-        
-        // フォーマッター設定
+        // Ruffをデフォルトのフォーマッターとリンターに設定
         "editor.formatOnSave": true,
-        "editor.codeActionsOnSave": {
-          "source.organizeImports": "explicit"
-        },
-        "python.formatting.provider": "none",
-        "python.formatting.blackArgs": ["--line-length", "88"],
         "[python]": {
-          "editor.defaultFormatter": "ms-python.black-formatter",
-          "editor.formatOnSave": true
+          "editor.defaultFormatter": "charliermarsh.ruff",
+          "editor.formatOnSave": true,
+          "editor.codeActionsOnSave": {
+            "source.fixAll": "explicit",
+            "source.organizeImports.ruff": "explicit"
+          }
         },
-        
-        // リンター設定
+        // 従来のリンター・フォーマッターを無効化
+        "python.formatting.provider": "none",
         "python.linting.enabled": true,
-        "python.linting.lintOnSave": true,
-        "python.linting.flake8Enabled": true,
-        "python.linting.flake8Args": ["--max-line-length=88", "--ignore=E203,W503"],
-        "python.linting.mypyEnabled": true,
-        
+        "python.linting.flake8Enabled": false,
+        "python.linting.pylintEnabled": false,
+        "isort.enabled": false,
+        "black.enabled": false,
+        // Ruff設定
+        "ruff.enable": true,
+        "ruff.organizeImports": true,
+        // MyPy設定
+        "mypy.enabled": true,
+        "mypy.configFile": "${workspaceFolder}/pyproject.toml",
         // テスト設定
         "python.testing.pytestEnabled": true,
         "python.testing.unittestEnabled": false,
         "python.testing.nosetestsEnabled": false,
         "python.testing.pytestArgs": [
           "tests"
-        ]
+        ],
+        "files.exclude": {
+          "**/.mypy_cache": true,
+          "**/.venv": true,
+          "**/__pycache__": true,
+          "**/.pytest_cache": true,
+          "**/.ruff_cache": true,
+          "**/*.pyc": true
+        }
       }
     }
   },
   "containerEnv": {
     "PYTHONPATH": "${containerWorkspaceFolder}"
   },
-  "postCreateCommand": "pip install --upgrade pip && pip install poetry && poetry config virtualenvs.in-project true && poetry install --no-interaction || (pip install pytest pytest-asyncio pytest-cov black flake8 mypy isort python-dotenv notion-client && pip install -r requirements.txt 2>/dev/null || echo 'No requirements.txt found, using Poetry or installing common dependencies')"
+  "postCreateCommand": "pip install --upgrade pip && pip install poetry && poetry config virtualenvs.in-project true && poetry install"
 }

@@ -1,4 +1,5 @@
 import os
+from typing import Any
 
 from dotenv import load_dotenv
 from notion_client import Client
@@ -11,15 +12,15 @@ DATABASE_ID = "1b7f60eb44fe80449e7dc5aa41e0caab"
 notion = Client(auth=NOTION_TOKEN)
 
 
-async def get_database(database_id):
+async def get_database(database_id: str) -> Any:
     try:
-        database = notion.databases.retrieve(database_id)
+        database: Any = notion.databases.retrieve(database_id)
         return database
     except Exception as e:
         raise e
 
 
-async def main():
+async def main() -> None:
     await get_database(DATABASE_ID)
 
 
