@@ -33,7 +33,7 @@ fix = true
 # 新規の推奨設定方法
 [tool.ruff.lint]
 select = ["E", "F", "W", "I", "B", "C4", "ARG", "SIM", "ERA"]
-ignore = ["E203"]
+ignore = ["E203", "ERA001"]
 
 [tool.ruff.lint.isort]
 known-first-party = ["src"]
