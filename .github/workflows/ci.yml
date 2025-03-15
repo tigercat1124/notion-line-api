@@ -42,15 +42,15 @@ jobs:
     
     - name: Lint with Ruff
       run: |
-        poetry run ruff check src/ tests/
+        poetry run ruff check
     
     - name: Type check with mypy
       run: |
-        poetry run mypy src/ tests/
+        poetry run mypy .
     
     - name: Test with pytest
       run: |
-        poetry run pytest --cov=src tests/
+        poetry run pytest
     
     - name: Upload coverage report
       uses: codecov/codecov-action@v3

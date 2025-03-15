@@ -1,9 +1,9 @@
 {
   "name": "Python Ruff Development",
-  "image": "mcr.microsoft.com/devcontainers/python:3.13",
+  "image": "mcr.microsoft.com/devcontainers/python:3.11",
   "features": {
     "ghcr.io/devcontainers/features/python:1": {
-      "version": "3.13",
+      "version": "3.11",
       "installTools": true,
       "installJupyterlab": true
     }
@@ -26,7 +26,9 @@
         "eamodio.gitlens",
         "tamasfe.even-better-toml",
         "mhutchie.git-graph",
-        "streetsidesoftware.code-spell-checker"
+        "streetsidesoftware.code-spell-checker",
+        "GitHub.copilot",
+        "usernamehw.errorlens"
       ],
       "settings": {
         "python.defaultInterpreterPath": "/usr/local/bin/python",
@@ -50,8 +52,6 @@
         "black.enabled": false,
         // Ruff設定
         "ruff.enable": true,
-        "ruff.format.args": [],
-        "ruff.lint.run": "onSave",
         "ruff.organizeImports": true,
         // MyPy設定
         "mypy.enabled": true,
@@ -62,7 +62,15 @@
         "python.testing.nosetestsEnabled": false,
         "python.testing.pytestArgs": [
           "tests"
-        ]
+        ],
+        "files.exclude": {
+          "**/.mypy_cache": true,
+          "**/.venv": true,
+          "**/__pycache__": true,
+          "**/.pytest_cache": true,
+          "**/.ruff_cache": true,
+          "**/*.pyc": true
+        }
       }
     }
   },
