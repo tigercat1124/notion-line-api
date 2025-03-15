@@ -1,5 +1,6 @@
 import asyncio
 import os
+from typing import Any
 
 from dotenv import load_dotenv
 from notion_client import AsyncClient
@@ -12,9 +13,9 @@ DATABASE_ID = "1b7f60eb44fe80449e7dc5aa41e0caab"
 notion = AsyncClient(auth=NOTION_TOKEN)
 
 
-async def create_page(database_id, title):
+async def create_page(database_id: str, title: str) -> None:
     try:
-        new_page = await notion.pages.create(
+        new_page: Any = await notion.pages.create(
             **{
                 "parent": {"database_id": database_id},
                 "properties": {
@@ -34,7 +35,7 @@ async def create_page(database_id, title):
         raise e
 
 
-async def main():
+async def main() -> None:
     title = "新しいページ"
     await create_page(DATABASE_ID, title)
 
