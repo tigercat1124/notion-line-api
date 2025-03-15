@@ -16,5 +16,9 @@
     "python.testing.unittestEnabled": false,
     "python.testing.pytestArgs": [
         "tests"
+    ],
+    "errorLens.enabledDiagnosticLevels": [
+        "error",
+        "warning"
     ]
 }
