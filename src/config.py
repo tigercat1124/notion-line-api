@@ -1,0 +1,11 @@
+import os
+
+from dotenv import load_dotenv
+
+load_dotenv()
+
+NOTION_TOKEN = os.environ.get("NOTION_TOKEN")
+DATABASE_ID = os.environ.get("DATABASE_ID")
+
+if not all([NOTION_TOKEN, DATABASE_ID]):
+    raise ValueError("環境変数を設定してください")

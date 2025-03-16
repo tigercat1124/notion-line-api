@@ -17,6 +17,8 @@
     "python.testing.pytestArgs": [
         "tests"
     ],
+    "python.analysis.autoImportCompletions": true,
+    "python.analysis.indexing": true,
     "errorLens.enabledDiagnosticLevels": [
         "error",
         "warning"
