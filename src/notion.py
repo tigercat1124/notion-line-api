@@ -1,6 +1,6 @@
 import datetime
 import logging
-from typing import Any
+from typing import Any, Optional
 
 from notion_client import AsyncClient
 
@@ -11,11 +11,8 @@ logger = logging.getLogger(__name__)
 
 
 class AsyncNotion:
-    def __init__(self, client: AsyncClient | None = None) -> None:
-        if client:
-            self._client = client
-        else:
-            self._client = AsyncClient(auth=NOTION_TOKEN)
+    def __init__(self, client: Optional[AsyncClient] = None) -> None:
+        self._client = client or AsyncClient(auth=NOTION_TOKEN)
 
     async def create_page(self) -> Any:
         logger.info("新しいページを作成します...")
