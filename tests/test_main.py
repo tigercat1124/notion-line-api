@@ -1,20 +1,52 @@
+from unittest.mock import AsyncMock, patch
+
 import pytest
-from notion_client.errors import APIResponseError
+from httpx import Response
+from notion_client.errors import APIErrorCode, APIResponseError
 
-from src.main import create_page
-
-
-@pytest.mark.asyncio
-async def test_create_page_invalid_database_id() -> None:
-    with pytest.raises(APIResponseError):
-        await create_page("invalid_database_id", "test_title")
+from src.notion import AsyncNotion
 
 
 @pytest.mark.asyncio
-async def test_create_page_valid_database_id() -> None:
-    # database_id = "1b7f60eb-44fe-8044-9e7d-c5aa41e0caab"
-    # pattern = re.compile(
-    #     "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$"
-    # )
-    # assert pattern.match(database_id)
-    pass
+async def test_notion_create_page_success() -> None:
+    notion = AsyncNotion(notion_token="valid_token")
+    with patch.object(
+        notion._AsyncNotion__client.pages, "create", new_callable=AsyncMock
+    ) as mock_create:
+        mock_create.return_value = {"id": "test_id"}
+        result = await notion.create_page(title="test_title")
+        assert result == {"id": "test_id"}
+
+
+@pytest.mark.asyncio
+async def test_notion_create_page_retry() -> None:
+    notion = AsyncNotion(notion_token="valid_token")
+    with patch.object(
+        notion._AsyncNotion__client.pages, "create", new_callable=AsyncMock
+    ) as mock_create:
+        mock_create.side_effect = [
+            APIResponseError(
+                response=Response(429),
+                code=APIErrorCode.RateLimited,
+                message="Rate limited",
+            ),
+            {"id": "test_id"},
+        ]
+        result = await notion.create_page(title="test_title")
+        assert result == {"id": "test_id"}
+        assert mock_create.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_notion_create_page_failure() -> None:
+    notion = AsyncNotion(notion_token="valid_token")
+    with patch.object(
+        notion._AsyncNotion__client.pages, "create", new_callable=AsyncMock
+    ) as mock_create:
+        mock_create.side_effect = APIResponseError(
+            response=Response(500),
+            code=APIErrorCode.InternalServerError,
+            message="Internal Server Error",
+        )
+        with pytest.raises(APIResponseError):
+            await notion.create_page(title="test_title")
