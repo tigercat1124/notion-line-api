@@ -4,8 +4,7 @@ from src.notion import AsyncNotion
 
 
 async def main() -> None:
-    title = "新しいページ"
-    await AsyncNotion().create_page(title)
+    await AsyncNotion().create_page()
 
 
 if __name__ == "__main__":
