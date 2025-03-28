@@ -1,0 +1,37 @@
+flowchart TD
+    %% アクターの定義
+    User((ユーザー))
+    LINE((LINE\nMessaging API))
+    Notion((Notion API))
+    
+    %% ユースケースの定義
+    UC1[メッセージ送信]
+    UC2[Webhookイベント処理]
+    UC3[Notionデータ取得]
+    UC4[Notionデータ更新]
+    UC5[返信メッセージ送信]
+    
+    %% 関連の定義
+    User -->|利用する| UC1
+    UC1 -->|トリガー| UC2
+    UC2 -->|要求| UC3
+    UC2 -->|要求| UC4
+    UC3 -.->|データ提供| Notion
+    UC4 -.->|データ更新| Notion
+    UC2 -->|実行| UC5
+    UC5 -->|通知| User
+    
+    %% スタイル設定
+    classDef actor fill:#ffdce5,stroke:#ff8fab,color:#333
+    classDef usecase fill:#e0f7fa,stroke:#80deea,color:#333
+    
+    class User,LINE,Notion actor
+    class UC1,UC2,UC3,UC4,UC5 usecase
+    
+    %% 注釈
+    subgraph システム機能
+        UC2
+        UC3
+        UC4
+        UC5
+    end

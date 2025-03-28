@@ -28,7 +28,8 @@
         "mhutchie.git-graph",
         "streetsidesoftware.code-spell-checker",
         "GitHub.copilot",
-        "usernamehw.errorlens"
+        "usernamehw.errorlens",
+        "bierner.markdown-mermaid"
       ],
       "settings": {
         "python.defaultInterpreterPath": "/usr/local/bin/python",
